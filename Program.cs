@@ -6,6 +6,134 @@ Console.OutputEncoding = Encoding.UTF8;
 CreateRedTeam(out List<SmileHero> redTeam);
 CreateBlueTeam(out List<SmileHero> blueTeam);
 
+Dictionary<SmileHero, int> orderFightRedTeam = new();
+Dictionary<SmileHero, int> orderFightBlueTeam = new();
+
+Console.WriteLine("RED TEAM");
+for (int i = 0; i < redTeam.Count; i++)
+{
+    Console.Write($"{redTeam[i].Image}\t");
+}
+Console.WriteLine("\nArrange the order of emoticons");
+
+while (orderFightRedTeam.Count < 10)
+{
+    foreach (var item in orderFightRedTeam)
+    {
+        Console.Write($"{item.Value} - {item.Key.Image}\t");
+    }
+
+    Console.WriteLine("\nInput number from 0 to 9");
+
+    var num = Console.ReadLine();
+
+    if (!int.TryParse(num, out int value))
+    {
+        Console.WriteLine("A non-correct number");
+        continue;
+    }
+
+    if (value < 0 || value > 9)
+    {
+        Console.WriteLine("A non-correct number");
+        continue;
+    }
+
+    if (orderFightRedTeam.ContainsKey(redTeam[value]))
+    {
+        Console.WriteLine("This smile already selected");
+        continue;
+    }
+
+    orderFightRedTeam.Add(redTeam[value], value);
+}
+Console.WriteLine("GENERATION BLUE TEAM");
+Random rand = new Random();
+while (orderFightBlueTeam.Count < 10)
+{
+    var value = rand.Next(0, 10);
+
+
+    if (value < 0 || value > 9)
+    {
+
+        continue;
+    }
+
+    if (orderFightBlueTeam.ContainsKey(blueTeam[value]))
+    {
+
+        continue;
+    }
+
+    orderFightBlueTeam.Add(blueTeam[value], value);
+}
+
+
+Console.WriteLine("FIGHT");
+Console.WriteLine("RED TEAM VS BLUE TEAM");
+await Process(orderFightRedTeam, orderFightBlueTeam);
+
+
+
+async Task Process(
+    Dictionary<SmileHero, int> redTeam,
+    Dictionary<SmileHero, int> blueTeam)
+{
+    var redOrder = redTeam
+        .Select(x => x.Key)
+        .ToList();
+
+    var blueOrder = blueTeam
+        .Select(x => x.Key)
+        .ToList();
+
+    var count = Math.Min(redOrder.Count, blueOrder.Count);
+
+    foreach (var item in redTeam)
+    {
+        Console.Write($"{item.Value} - {item.Key.Image}\t");
+    }
+
+    Console.WriteLine("\nVS");
+
+    foreach (var item in blueTeam)
+    {
+        Console.Write($"{item.Value} - {item.Key.Image}\t");
+    }
+
+    Console.WriteLine();
+
+    for (int i = 0; i < count; i++)
+    {
+        Console.WriteLine($"Fight #{i + 1}");
+
+        var redFighter = redOrder[i];
+        var blueFighter = blueOrder[i];
+
+        redFighter.Attack(blueFighter);
+
+        Console.WriteLine();
+
+        await Task.Delay(500);
+    }
+
+    int countBlue = blueTeam.Select(x => x.Key.IsLive == true).Count();
+    int countRed = redTeam.Select(x => x.Key.IsLive == true).Count();
+
+    if (countBlue > countRed)
+    {
+        Console.WriteLine("BLUE WIN ");
+    }
+    else if (countRed > countBlue)
+    {
+        Console.WriteLine("RED WIN");
+    }
+    else
+    {
+        Console.WriteLine("DRAW");
+    }
+}
 
 
 

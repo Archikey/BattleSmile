@@ -6,25 +6,33 @@ namespace BattelSmile
 {
     internal abstract class SmileHero
     {
-        protected string Image { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
         protected SmileType smileType { get; set; } = SmileType.None;
         public SmileCommand smileCommand { get; set; } = SmileCommand.None;
 
         protected int Strong { get; set; } = 0;
-        protected bool IsLive { get; set; } = false;
+        public bool IsLive { get; set; } = false;
 
         public void Attack(SmileHero enemy)
         {
             Console.WriteLine($"{Image} VS {enemy.Image}");
 
             if (Strong > enemy.Strong)
+            {
                 enemy.IsLive = false;
+                Console.WriteLine($"{enemy.Image} DEAD");
+            }
+              
             else if (Strong < enemy.Strong)
+            {
                 IsLive = false;
+                Console.WriteLine($"{Image} DEAD");
+            }
             else
             {
                 enemy.IsLive = false;
                 IsLive = false;
+                Console.WriteLine($"{Image} AND {enemy.Image} DEADS");
             }
         }
     }
