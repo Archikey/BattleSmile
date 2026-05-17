@@ -227,17 +227,6 @@ BattelSmile/
 
 Содержит классы всех смайлик-героев.
 
-## Используемые технологии
-
-* C#
-* .NET
-* Console Application
-* OOP
-* Inheritance
-* Enum
-* List
-* Dictionary
-* Async / Await
 
 ## Запуск проекта
 
